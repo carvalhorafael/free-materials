@@ -1,0 +1,32 @@
+{
+  "name": "carvalhorafael/free-materials",
+  "description": "Reusable WordPress content domain for free materials.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6",
+    "yoast/phpunit-polyfills": "^2.0"
+  },
+  "autoload-dev": {
+    "files": [
+      "tests/helpers/test-case.php"
+    ]
+  },
+  "scripts": {
+    "package": "bash bin/build-package.sh",
+    "test": "phpunit -c phpunit.xml.dist",
+    "test:unit": "phpunit -c phpunit-unit.xml.dist",
+    "test:wordpress": "phpunit -c phpunit.xml.dist",
+    "install:wp-tests": "bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 latest true"
+  },
+  "config": {
+    "allow-plugins": false,
+    "platform": {
+      "php": "8.1.0"
+    },
+    "sort-packages": true
+  }
+}

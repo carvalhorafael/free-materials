@@ -1,0 +1,17 @@
+/.phpunit.cache/
+/.phpunit.result.cache
+/build/
+/coverage/
+/dist/
+/vendor/
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+*.dump
+*.bak
+*.backup
+.DS_Store
+.env
+.env.*
+.npmrc
