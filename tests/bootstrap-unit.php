@@ -24,7 +24,7 @@ if ( ! function_exists( 'add_filter' ) ) {
 }
 
 if ( ! function_exists( 'get_site_transient' ) ) {
-	function get_site_transient( ...$args ): false {
+	function get_site_transient( ...$args ): bool {
 		unset( $args );
 		return false;
 	}
