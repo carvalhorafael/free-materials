@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Free Materials
  * Description: Registers the reusable Free Materials content domain for WordPress sites.
- * Version: 0.1.1
+ * Version: 0.2.0
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: Rafael Carvalho
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FREE_MATERIALS_VERSION', '0.1.1' );
+define( 'FREE_MATERIALS_VERSION', '0.2.0' );
 define( 'FREE_MATERIALS_FILE', __FILE__ );
 define( 'FREE_MATERIALS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FREE_MATERIALS_BASENAME', plugin_basename( __FILE__ ) );

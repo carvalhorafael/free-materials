@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1 - capture UI decoupling
+## 0.2.0 - capture UI decoupling
 
 - Removed the plugin-owned lead capture meta box from the material editor.
 - Added generic public helpers for capture destination and delivery URL meta keys.

@@ -4,7 +4,7 @@ Tags: custom-post-type, content, resources, downloads
 Requires at least: 6.4
 Tested up to: 6.5
 Requires PHP: 8.1
-Stable tag: 0.1.1
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,7 @@ No. Lead capture settings belong to the active capture integration plugin.
 
 == Changelog ==
 
-= 0.1.1 =
+= 0.2.0 =
 
 * Removed the plugin-owned lead capture meta box from the material editor.
 * Added generic helpers for capture metadata while preserving legacy meta keys.
