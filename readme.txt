@@ -4,7 +4,7 @@ Tags: custom-post-type, content, resources, downloads
 Requires at least: 6.4
 Tested up to: 6.5
 Requires PHP: 8.1
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ The plugin registers:
 
 * `material_gratuito` custom post type.
 * `material_categoria` taxonomy.
-* Capture metadata for button text, Brevo list ID and delivery redirect URL.
+* Lead capture metadata for button text, capture destination ID and delivery URL.
 
 == Installation ==
 
@@ -32,11 +32,20 @@ The plugin registers:
 
 No. The active theme should provide templates and styling. This plugin owns the portable content model.
 
-= Does this plugin submit leads to Brevo? =
+= Does this plugin submit leads to a CRM? =
 
-No. It stores Brevo-related metadata for each material. A separate capture plugin can read those fields and process submissions.
+No. It stores portable lead capture metadata for each material. A separate capture plugin can read those fields and process submissions.
+
+= Does this plugin provide lead capture settings in the material editor? =
+
+No. Lead capture settings belong to the active capture integration plugin.
 
 == Changelog ==
+
+= 0.2.0 =
+
+* Removed the plugin-owned lead capture meta box from the material editor.
+* Added generic helpers for capture metadata while preserving legacy meta keys.
 
 = 0.1.0 =
 
