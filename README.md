@@ -8,20 +8,19 @@ Free Materials is a WordPress plugin that owns a reusable "free materials" conte
 - Custom taxonomy: `material_categoria`
 - REST-enabled metadata:
   - `_executive_signal_material_capture_label`
-  - `_brevo_leads_capture_list_id`
-  - `_brevo_leads_capture_delivery_url`
-- A WordPress admin meta box for capture settings
+  - `_brevo_leads_capture_list_id` (legacy storage key for the capture destination ID)
+  - `_brevo_leads_capture_delivery_url` (legacy storage key for the delivery URL)
 - Rewrite rules for `/materiais-gratuitos/` and `/materiais-gratuitos/categoria/...`
 - GitHub Releases update integration through the plugin `Update URI`
 
 ## What It Does Not Provide
 
-This plugin does not render a public front end and does not process lead capture form submissions. Themes and integration plugins should consume the content domain and decide how to display or process it.
+This plugin does not render a public front end, does not process lead capture form submissions and does not provide a lead capture settings UI. Themes and integration plugins should consume the content domain and decide how to display or process it.
 
 For example:
 
 - A theme may provide `single-material_gratuito.php` and `taxonomy-material_categoria.php`.
-- A lead-capture plugin may process `admin-post.php` submissions and read the Brevo metadata.
+- A lead-capture plugin may process `admin-post.php` submissions and read the capture metadata.
 
 ## Public Contract
 
@@ -31,9 +30,11 @@ The plugin keeps these identifiers stable so existing WordPress content remains 
 free_materials_post_type(); // material_gratuito
 free_materials_taxonomy(); // material_categoria
 free_materials_cta_label_meta_key(); // _executive_signal_material_capture_label
-free_materials_brevo_list_id_meta_key(); // _brevo_leads_capture_list_id
-free_materials_brevo_delivery_url_meta_key(); // _brevo_leads_capture_delivery_url
+free_materials_capture_destination_meta_key(); // _brevo_leads_capture_list_id
+free_materials_delivery_url_meta_key(); // _brevo_leads_capture_delivery_url
 ```
+
+The `_brevo_*` meta key names are preserved for backward compatibility with existing sites. New integrations should use the generic helper functions instead of coupling to a specific CRM name.
 
 ## Installation
 
