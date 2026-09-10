@@ -26,6 +26,7 @@ define( 'FREE_MATERIALS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FREE_MATERIALS_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once FREE_MATERIALS_DIR . 'includes/class-content-domain.php';
+require_once FREE_MATERIALS_DIR . 'includes/class-material-details.php';
 require_once FREE_MATERIALS_DIR . 'includes/class-github-updater.php';
 require_once FREE_MATERIALS_DIR . 'includes/class-plugin.php';
 
@@ -83,6 +84,66 @@ function free_materials_brevo_list_id_meta_key(): string {
  */
 function free_materials_brevo_delivery_url_meta_key(): string {
 	return Free_Materials_Content_Domain::BREVO_DELIVERY_URL_META_KEY;
+}
+
+/**
+ * Returns the meta key for the material format.
+ */
+function free_materials_format_meta_key(): string {
+	return Free_Materials_Content_Domain::FORMAT_META_KEY;
+}
+
+/**
+ * Returns the meta key for the material page or item count.
+ */
+function free_materials_pages_meta_key(): string {
+	return Free_Materials_Content_Domain::PAGES_META_KEY;
+}
+
+/**
+ * Returns the meta key for the material file size.
+ */
+function free_materials_file_size_meta_key(): string {
+	return Free_Materials_Content_Domain::FILE_SIZE_META_KEY;
+}
+
+/**
+ * Returns the meta key for who the material is for.
+ */
+function free_materials_level_meta_key(): string {
+	return Free_Materials_Content_Domain::LEVEL_META_KEY;
+}
+
+/**
+ * Returns the meta key for the "what is inside" list.
+ */
+function free_materials_highlights_meta_key(): string {
+	return Free_Materials_Content_Domain::HIGHLIGHTS_META_KEY;
+}
+
+/**
+ * Returns the meta key for the catalog feature flag.
+ */
+function free_materials_featured_meta_key(): string {
+	return Free_Materials_Content_Domain::FEATURED_META_KEY;
+}
+
+/**
+ * Returns the known material formats as slug keyed labels.
+ *
+ * @return array<string, string>
+ */
+function free_materials_formats(): array {
+	return Free_Materials_Content_Domain::formats();
+}
+
+/**
+ * Returns the label for a material format slug, or an empty string.
+ */
+function free_materials_format_label( string $slug ): string {
+	$formats = Free_Materials_Content_Domain::formats();
+
+	return $formats[ $slug ] ?? '';
 }
 
 register_activation_hook( __FILE__, array( 'Free_Materials_Plugin', 'activate' ) );

@@ -1,5 +1,18 @@
 # Changelog
 
+## Nao publicado
+
+- Adiciona metadados que descrevem o material: formato, paginas ou itens,
+  tamanho do arquivo, para quem serve, lista do que tem dentro e destaque no
+  catalogo. Todos com chave propria `_free_materials_*`, expostos no REST e
+  editaveis por um painel no editor.
+- Adiciona `free_materials_formats()` e o filtro `free_materials_formats`, com
+  os formatos conhecidos e validacao contra a lista no save.
+- Corrige a exposicao dos metadados no REST. O post type nao declarava suporte
+  a `custom-fields`, entao o WordPress nunca adicionava o campo `meta` a
+  resposta e nenhuma chave registrada era alcancavel por REST, inclusive as de
+  captura que ja existiam.
+
 ## 0.2.0 - capture UI decoupling
 
 - Removed the plugin-owned lead capture meta box from the material editor.

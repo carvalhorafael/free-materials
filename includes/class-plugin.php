@@ -16,10 +16,13 @@ class Free_Materials_Plugin {
 
 	private Free_Materials_Content_Domain $content_domain;
 
+	private Free_Materials_Material_Details $material_details;
+
 	private Free_Materials_GitHub_Updater $github_updater;
 
 	private function __construct() {
-		$this->content_domain = new Free_Materials_Content_Domain();
+		$this->content_domain   = new Free_Materials_Content_Domain();
+		$this->material_details = new Free_Materials_Material_Details();
 		$this->github_updater = new Free_Materials_GitHub_Updater( FREE_MATERIALS_FILE, FREE_MATERIALS_VERSION );
 	}
 
@@ -40,6 +43,7 @@ class Free_Materials_Plugin {
 
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		$this->content_domain->register_hooks();
+		$this->material_details->register_hooks();
 		$this->github_updater->register_hooks();
 	}
 
@@ -53,6 +57,10 @@ class Free_Materials_Plugin {
 
 	public function content_domain(): Free_Materials_Content_Domain {
 		return $this->content_domain;
+	}
+
+	public function material_details(): Free_Materials_Material_Details {
+		return $this->material_details;
 	}
 
 	public function github_updater(): Free_Materials_GitHub_Updater {
