@@ -30,6 +30,7 @@ class Free_Materials_Content_Domain {
 	public const LEVEL_META_KEY      = '_free_materials_level';
 	public const HIGHLIGHTS_META_KEY = '_free_materials_highlights';
 	public const FEATURED_META_KEY   = '_free_materials_featured';
+	public const DOWNLOADS_META_KEY  = '_free_materials_downloads';
 
 	public function register_hooks(): void {
 		add_action( 'init', array( $this, 'register_content_types' ) );
@@ -208,6 +209,18 @@ class Free_Materials_Content_Domain {
 				),
 				'single'            => true,
 				'type'              => 'array',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::DOWNLOADS_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => 'absint',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'integer',
 			)
 		);
 

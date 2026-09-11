@@ -122,6 +122,13 @@ function free_materials_highlights_meta_key(): string {
 }
 
 /**
+ * Returns the meta key for the download count shown as social proof.
+ */
+function free_materials_downloads_meta_key(): string {
+	return Free_Materials_Content_Domain::DOWNLOADS_META_KEY;
+}
+
+/**
  * Returns the meta key for the catalog feature flag.
  */
 function free_materials_featured_meta_key(): string {
