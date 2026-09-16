@@ -18,12 +18,21 @@ class Free_Materials_Plugin {
 
 	private Free_Materials_Material_Details $material_details;
 
+	private Free_Materials_CSV_Parser $csv_parser;
+
+	private Free_Materials_Importer $importer;
+
+	private Free_Materials_Import_Admin_Page $import_admin_page;
+
 	private Free_Materials_GitHub_Updater $github_updater;
 
 	private function __construct() {
-		$this->content_domain   = new Free_Materials_Content_Domain();
-		$this->material_details = new Free_Materials_Material_Details();
-		$this->github_updater = new Free_Materials_GitHub_Updater( FREE_MATERIALS_FILE, FREE_MATERIALS_VERSION );
+		$this->content_domain    = new Free_Materials_Content_Domain();
+		$this->material_details  = new Free_Materials_Material_Details();
+		$this->csv_parser        = new Free_Materials_CSV_Parser();
+		$this->importer          = new Free_Materials_Importer( $this->csv_parser, $this->content_domain );
+		$this->import_admin_page = new Free_Materials_Import_Admin_Page( $this->csv_parser, $this->importer );
+		$this->github_updater    = new Free_Materials_GitHub_Updater( FREE_MATERIALS_FILE, FREE_MATERIALS_VERSION );
 	}
 
 	public static function instance(): Free_Materials_Plugin {
@@ -44,6 +53,8 @@ class Free_Materials_Plugin {
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 		$this->content_domain->register_hooks();
 		$this->material_details->register_hooks();
+		$this->importer->register_hooks();
+		$this->import_admin_page->register_hooks();
 		$this->github_updater->register_hooks();
 	}
 
@@ -61,6 +72,18 @@ class Free_Materials_Plugin {
 
 	public function material_details(): Free_Materials_Material_Details {
 		return $this->material_details;
+	}
+
+	public function csv_parser(): Free_Materials_CSV_Parser {
+		return $this->csv_parser;
+	}
+
+	public function importer(): Free_Materials_Importer {
+		return $this->importer;
+	}
+
+	public function import_admin_page(): Free_Materials_Import_Admin_Page {
+		return $this->import_admin_page;
 	}
 
 	public function github_updater(): Free_Materials_GitHub_Updater {

@@ -2,6 +2,13 @@
 
 ## Nao publicado
 
+- Adiciona importacao de materiais por CSV, em Materiais gratuitos > Importar.
+  O fluxo baixa um modelo, valida a planilha, mostra uma previa com erros e
+  avisos por linha e so entao grava, devolvendo um relatorio linha a linha.
+  Nenhum material e criado antes da confirmacao.
+- Adiciona `Free_Materials_CSV_Parser`, `Free_Materials_Importer` e
+  `Free_Materials_Import_Admin_Page`, com os metadados de rastreio
+  `_free_materials_import_*` que registram de onde cada material veio.
 - Adiciona `_free_materials_downloads`, contagem editorial de downloads que os
   consumidores podem exibir como prova social. Vazia por padrao.
 
