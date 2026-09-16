@@ -2,6 +2,8 @@
 
 ## Nao publicado
 
+## 0.3.0 - importacao e metadados do material
+
 - Adiciona importacao de materiais por CSV, em Materiais gratuitos > Importar.
   O fluxo baixa um modelo, valida a planilha, mostra uma previa com erros e
   avisos por linha e so entao grava, devolvendo um relatorio linha a linha.
