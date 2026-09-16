@@ -94,6 +94,7 @@ final class ContentDomainTest extends WP_UnitTestCase {
 		$this->assertArrayHasKey( '_free_materials_level', $registered_meta );
 		$this->assertArrayHasKey( '_free_materials_highlights', $registered_meta );
 		$this->assertArrayHasKey( '_free_materials_featured', $registered_meta );
+		$this->assertArrayHasKey( '_free_materials_downloads', $registered_meta );
 
 		// The plugin owns these, so they carry its own prefix instead of the
 		// legacy keys kept for portability.
@@ -103,11 +104,13 @@ final class ContentDomainTest extends WP_UnitTestCase {
 		$this->assertSame( '_free_materials_level', free_materials_level_meta_key() );
 		$this->assertSame( '_free_materials_highlights', free_materials_highlights_meta_key() );
 		$this->assertSame( '_free_materials_featured', free_materials_featured_meta_key() );
+		$this->assertSame( '_free_materials_downloads', free_materials_downloads_meta_key() );
 
 		$this->assertTrue( $registered_meta['_free_materials_format']['show_in_rest'] );
 		$this->assertSame( 'integer', $registered_meta['_free_materials_pages']['type'] );
 		$this->assertSame( 'boolean', $registered_meta['_free_materials_featured']['type'] );
 		$this->assertSame( 'array', $registered_meta['_free_materials_highlights']['type'] );
+		$this->assertSame( 'integer', $registered_meta['_free_materials_downloads']['type'] );
 	}
 
 	public function test_format_is_constrained_to_the_known_list(): void {

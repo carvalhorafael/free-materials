@@ -2,6 +2,9 @@
 
 ## Nao publicado
 
+- Adiciona `_free_materials_downloads`, contagem editorial de downloads que os
+  consumidores podem exibir como prova social. Vazia por padrao.
+
 - Adiciona metadados que descrevem o material: formato, paginas ou itens,
   tamanho do arquivo, para quem serve, lista do que tem dentro e destaque no
   catalogo. Todos com chave propria `_free_materials_*`, expostos no REST e

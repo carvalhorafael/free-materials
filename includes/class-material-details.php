@@ -45,6 +45,7 @@ class Free_Materials_Material_Details {
 		$file_size  = (string) get_post_meta( $post_id, Free_Materials_Content_Domain::FILE_SIZE_META_KEY, true );
 		$level      = (string) get_post_meta( $post_id, Free_Materials_Content_Domain::LEVEL_META_KEY, true );
 		$featured   = (bool) get_post_meta( $post_id, Free_Materials_Content_Domain::FEATURED_META_KEY, true );
+		$downloads  = (int) get_post_meta( $post_id, Free_Materials_Content_Domain::DOWNLOADS_META_KEY, true );
 		$highlights = get_post_meta( $post_id, Free_Materials_Content_Domain::HIGHLIGHTS_META_KEY, true );
 		$highlights = is_array( $highlights ) ? implode( "\n", $highlights ) : '';
 
@@ -88,6 +89,14 @@ class Free_Materials_Material_Details {
 			<textarea id="free-materials-highlights" name="free_materials_highlights" class="widefat" rows="6" aria-describedby="free-materials-highlights-help"><?php echo esc_textarea( $highlights ); ?></textarea>
 			<span id="free-materials-highlights-help" class="description">
 				<?php echo esc_html__( 'One topic per line, up to 12.', 'free-materials' ); ?>
+			</span>
+		</p>
+
+		<p>
+			<label for="free-materials-downloads"><strong><?php echo esc_html__( 'Downloads so far', 'free-materials' ); ?></strong></label>
+			<input type="number" min="0" step="1" id="free-materials-downloads" name="free_materials_downloads" class="widefat" value="<?php echo esc_attr( $downloads > 0 ? (string) $downloads : '' ); ?>" aria-describedby="free-materials-downloads-help" />
+			<span id="free-materials-downloads-help" class="description">
+				<?php echo esc_html__( 'Shown as social proof. Leave empty to show nothing.', 'free-materials' ); ?>
 			</span>
 		</p>
 
@@ -140,6 +149,9 @@ class Free_Materials_Material_Details {
 
 		$highlights = isset( $_POST['free_materials_highlights'] ) ? wp_unslash( $_POST['free_materials_highlights'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by sanitize_highlights().
 		$this->update_or_delete( $post_id, Free_Materials_Content_Domain::HIGHLIGHTS_META_KEY, $domain->sanitize_highlights( $highlights ) );
+
+		$downloads = isset( $_POST['free_materials_downloads'] ) ? absint( wp_unslash( $_POST['free_materials_downloads'] ) ) : 0;
+		$this->update_or_delete( $post_id, Free_Materials_Content_Domain::DOWNLOADS_META_KEY, $downloads > 0 ? $downloads : '' );
 
 		$featured = ! empty( $_POST['free_materials_featured'] );
 		$this->update_or_delete( $post_id, Free_Materials_Content_Domain::FEATURED_META_KEY, $featured ? true : '' );

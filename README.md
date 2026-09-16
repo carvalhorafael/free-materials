@@ -17,6 +17,7 @@ Free Materials is a WordPress plugin that owns a reusable "free materials" conte
   - `_free_materials_level` (free text: who the material is for)
   - `_free_materials_highlights` (array of strings: what is inside, up to 12)
   - `_free_materials_featured` (boolean: feature it in a catalog)
+  - `_free_materials_downloads` (integer: how many people downloaded it, shown as social proof)
 - Rewrite rules for `/materiais-gratuitos/` and `/materiais-gratuitos/categoria/...`
 - GitHub Releases update integration through the plugin `Update URI`
 
