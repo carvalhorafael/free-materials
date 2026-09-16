@@ -6,10 +6,26 @@ Free Materials is a WordPress plugin that owns a reusable "free materials" conte
 
 - Custom post type: `material_gratuito`
 - Custom taxonomy: `material_categoria`
-- REST-enabled metadata:
+- REST-enabled capture metadata, read by the integration plugin:
   - `_executive_signal_material_capture_label`
   - `_brevo_leads_capture_list_id` (legacy storage key for the capture destination ID)
   - `_brevo_leads_capture_delivery_url` (legacy storage key for the delivery URL)
+- REST-enabled metadata describing the material itself, with an editor panel:
+  - `_free_materials_format` (one of the slugs in `free_materials_formats()`)
+  - `_free_materials_pages` (integer: pages or items)
+  - `_free_materials_file_size` (free text, e.g. `2,4 MB`)
+  - `_free_materials_level` (free text: who the material is for)
+  - `_free_materials_highlights` (array of strings: what is inside, up to 12)
+  - `_free_materials_featured` (boolean: feature it in a catalog)
+  - `_free_materials_downloads` (integer: how many people downloaded it, shown as social proof)
+- CSV import under **Free materials > Importar**, with a downloadable template,
+  a validated preview and a per-row report. Tracking metadata records where each
+  material came from:
+  - `_free_materials_import_external_id` (the row's `id_externo`, lowercased)
+  - `_free_materials_import_batch_id` (one UUID per import run)
+  - `_free_materials_import_source` (the uploaded file name)
+  - `_free_materials_import_fingerprint` (hash of the row as imported)
+  - `_free_materials_import_image_url` (the cover URL already fetched)
 - Rewrite rules for `/materiais-gratuitos/` and `/materiais-gratuitos/categoria/...`
 - GitHub Releases update integration through the plugin `Update URI`
 
@@ -21,6 +37,25 @@ For example:
 
 - A theme may provide `single-material_gratuito.php` and `taxonomy-material_categoria.php`.
 - A lead-capture plugin may process `admin-post.php` submissions and read the capture metadata.
+
+## Material Formats
+
+`free_materials_formats()` returns the known formats as slug keyed labels. A site
+can add its own without patching the plugin:
+
+```php
+add_filter(
+    'free_materials_formats',
+    static function ( array $formats ): array {
+        $formats['audiobook'] = 'Audiobook';
+
+        return $formats;
+    }
+);
+```
+
+A stored format outside the list is discarded on save, so a consumer can trust
+that `_free_materials_format` is either empty or a known slug.
 
 ## Public Contract
 

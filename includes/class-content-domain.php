@@ -19,6 +19,19 @@ class Free_Materials_Content_Domain {
 	public const DELIVERY_URL_META_KEY        = self::BREVO_DELIVERY_URL_META_KEY;
 	public const MATERIALS_PAGE_PATH          = 'materiais-gratuitos';
 
+	/*
+	 * Descriptive metadata about the material itself. These keys are owned by
+	 * this plugin, so they use its own prefix instead of the legacy keys kept
+	 * above for portability of existing content.
+	 */
+	public const FORMAT_META_KEY     = '_free_materials_format';
+	public const PAGES_META_KEY      = '_free_materials_pages';
+	public const FILE_SIZE_META_KEY  = '_free_materials_file_size';
+	public const LEVEL_META_KEY      = '_free_materials_level';
+	public const HIGHLIGHTS_META_KEY = '_free_materials_highlights';
+	public const FEATURED_META_KEY   = '_free_materials_featured';
+	public const DOWNLOADS_META_KEY  = '_free_materials_downloads';
+
 	public function register_hooks(): void {
 		add_action( 'init', array( $this, 'register_content_types' ) );
 		add_action( 'init', array( $this, 'register_meta' ), 11 );
@@ -40,7 +53,14 @@ class Free_Materials_Content_Domain {
 					'with_front' => false,
 				),
 				'show_in_rest'       => true,
-				'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+				/*
+				 * 'custom-fields' is what makes WordPress add the `meta` field
+				 * to the REST response. Without it the keys registered below
+				 * are unreachable over REST even with show_in_rest set on each
+				 * one. Every key this plugin registers is protected, so the
+				 * editor's Custom Fields panel does not expose them.
+				 */
+				'supports'           => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
 			)
 		);
 
@@ -111,6 +131,181 @@ class Free_Materials_Content_Domain {
 				'type'              => 'string',
 			)
 		);
+
+		$this->register_material_details_meta();
+	}
+
+	/**
+	 * Register the metadata that describes the material itself.
+	 *
+	 * Consumers use it to tell a visitor what they are about to download
+	 * before asking for their contact details.
+	 */
+	public function register_material_details_meta(): void {
+		$can_edit = static function () {
+			return current_user_can( 'edit_posts' );
+		};
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::FORMAT_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => array( $this, 'sanitize_format' ),
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'string',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::PAGES_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => 'absint',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'integer',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::FILE_SIZE_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'string',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::LEVEL_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => 'sanitize_text_field',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'string',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::HIGHLIGHTS_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'default'           => array(),
+				'sanitize_callback' => array( $this, 'sanitize_highlights' ),
+				'show_in_rest'      => array(
+					'schema' => array(
+						'items' => array( 'type' => 'string' ),
+						'type'  => 'array',
+					),
+				),
+				'single'            => true,
+				'type'              => 'array',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::DOWNLOADS_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'sanitize_callback' => 'absint',
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'integer',
+			)
+		);
+
+		register_post_meta(
+			self::POST_TYPE,
+			self::FEATURED_META_KEY,
+			array(
+				'auth_callback'     => $can_edit,
+				'default'           => false,
+				'sanitize_callback' => static function ( $value ) {
+					return (bool) $value;
+				},
+				'show_in_rest'      => true,
+				'single'            => true,
+				'type'              => 'boolean',
+			)
+		);
+	}
+
+	/**
+	 * The formats a material can be delivered in.
+	 *
+	 * Filterable so a site can add its own without patching the plugin.
+	 *
+	 * @return array<string, string> Slug keyed labels.
+	 */
+	public static function formats(): array {
+		$formats = array(
+			'pdf'       => __( 'PDF', 'free-materials' ),
+			'planner'   => __( 'Planner', 'free-materials' ),
+			'checklist' => __( 'Checklist', 'free-materials' ),
+			'planilha'  => __( 'Spreadsheet', 'free-materials' ),
+			'simulado'  => __( 'Mock exam', 'free-materials' ),
+			'videoaula' => __( 'Video lesson', 'free-materials' ),
+		);
+
+		/**
+		 * Filters the list of free material formats.
+		 *
+		 * @param array<string, string> $formats Slug keyed labels.
+		 */
+		return (array) apply_filters( 'free_materials_formats', $formats );
+	}
+
+	/**
+	 * Keep the stored format inside the known list.
+	 *
+	 * @param mixed $value Raw value.
+	 */
+	public function sanitize_format( $value ): string {
+		$slug = sanitize_key( is_scalar( $value ) ? (string) $value : '' );
+
+		return array_key_exists( $slug, self::formats() ) ? $slug : '';
+	}
+
+	/**
+	 * Normalise the "what is inside" list into clean, non-empty strings.
+	 *
+	 * @param mixed $value Raw value.
+	 * @return string[]
+	 */
+	public function sanitize_highlights( $value ): array {
+		if ( is_string( $value ) ) {
+			$value = preg_split( '/\r\n|\r|\n/', $value );
+		}
+
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+
+		$highlights = array();
+
+		foreach ( $value as $item ) {
+			if ( ! is_scalar( $item ) ) {
+				continue;
+			}
+
+			$clean = sanitize_text_field( (string) $item );
+
+			if ( '' !== $clean ) {
+				$highlights[] = $clean;
+			}
+		}
+
+		return array_values( array_slice( $highlights, 0, 12 ) );
 	}
 
 	/**
