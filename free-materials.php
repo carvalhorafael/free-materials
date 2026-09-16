@@ -28,6 +28,9 @@ define( 'FREE_MATERIALS_BASENAME', plugin_basename( __FILE__ ) );
 require_once FREE_MATERIALS_DIR . 'includes/class-content-domain.php';
 require_once FREE_MATERIALS_DIR . 'includes/class-material-details.php';
 require_once FREE_MATERIALS_DIR . 'includes/class-github-updater.php';
+require_once FREE_MATERIALS_DIR . 'includes/class-csv-parser.php';
+require_once FREE_MATERIALS_DIR . 'includes/class-importer.php';
+require_once FREE_MATERIALS_DIR . 'includes/class-import-admin-page.php';
 require_once FREE_MATERIALS_DIR . 'includes/class-plugin.php';
 
 /**

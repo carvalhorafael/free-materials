@@ -18,6 +18,14 @@ Free Materials is a WordPress plugin that owns a reusable "free materials" conte
   - `_free_materials_highlights` (array of strings: what is inside, up to 12)
   - `_free_materials_featured` (boolean: feature it in a catalog)
   - `_free_materials_downloads` (integer: how many people downloaded it, shown as social proof)
+- CSV import under **Free materials > Importar**, with a downloadable template,
+  a validated preview and a per-row report. Tracking metadata records where each
+  material came from:
+  - `_free_materials_import_external_id` (the row's `id_externo`, lowercased)
+  - `_free_materials_import_batch_id` (one UUID per import run)
+  - `_free_materials_import_source` (the uploaded file name)
+  - `_free_materials_import_fingerprint` (hash of the row as imported)
+  - `_free_materials_import_image_url` (the cover URL already fetched)
 - Rewrite rules for `/materiais-gratuitos/` and `/materiais-gratuitos/categoria/...`
 - GitHub Releases update integration through the plugin `Update URI`
 
